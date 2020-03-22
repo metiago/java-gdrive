@@ -1,7 +1,5 @@
 package io.zbx.repositories;
 
-import io.zbx.dto.Session;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
