@@ -18,9 +18,13 @@ public class HomeController {
         return new ModelAndView("index");
     }
 
+    @RequestMapping(value = {"/swagger"}, method = RequestMethod.GET)
+    public String swagger() {
+        return "redirect:/swagger-ui.html";
+    }
+
     @RequestMapping(value = {"/auth-code"}, method = RequestMethod.GET)
     public ModelAndView authorize() throws Exception {
-
         return new ModelAndView("index");
     }
 }
