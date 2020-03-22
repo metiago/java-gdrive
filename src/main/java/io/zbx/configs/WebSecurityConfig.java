@@ -46,12 +46,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http.authorizeRequests().antMatchers("/static/**").permitAll();
+
         http.cors().and().csrf().disable().
                 authorizeRequests()
                 .antMatchers("/",
-                        "/authorize/*",
+                        "/callback/*",
+                        "/swagger",
                         "/token/*",
-                        "/files/*",
+                        "/files/*", // TODO remove after auth done
                         "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",

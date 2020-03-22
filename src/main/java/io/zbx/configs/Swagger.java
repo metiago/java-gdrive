@@ -40,7 +40,7 @@ public class Swagger {
 
     private ApiInfo apiInfo() {
         Contact contact = new Contact("Mr. Souza", "https://metiago.github.io", "tiagotg.ribeiro@gmail.com");
-        ApiInfo apiInfo = new ApiInfo("ZBX2", "This is the ZBX2 API",
+        ApiInfo apiInfo = new ApiInfo("ZBX2", "This is a web API integrated directly with Google Drive API.",
                 "0.1.0", "Terms of service",
                 contact,
                 "Apache 2.0",
