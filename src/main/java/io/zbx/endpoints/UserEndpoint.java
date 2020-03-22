@@ -17,14 +17,14 @@ public class UserEndpoint {
     private UserService userService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/users", method = RequestMethod.GET)
-    public List<User> listUser(Authentication authentication){
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public List<User> listUser(Authentication authentication) {
         return userService.findAll();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-    public User getOne(@PathVariable(value = "id") Long id){
+    public User getOne(@PathVariable(value = "id") Long id) {
         return userService.findById(id);
     }
 }

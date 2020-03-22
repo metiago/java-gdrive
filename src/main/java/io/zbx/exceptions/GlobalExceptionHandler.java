@@ -39,9 +39,7 @@ public class GlobalExceptionHandler {
             errorDetails.setStatusCode(400);
             errorDetails.setErrorMessage(e.getMessage());
             return new ResponseEntity<>(((MethodArgumentNotValidException) e).getBindingResult(), HttpStatus.BAD_REQUEST);
-        }
-
-        else {
+        } else {
             errorDetails.setStatusCode(500);
             errorDetails.setErrorMessage("Sorry. Something went wrong. Try again later.");
             return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);

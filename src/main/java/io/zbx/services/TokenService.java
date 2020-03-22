@@ -3,10 +3,10 @@ package io.zbx.services;
 import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.drive.Drive;
-import io.zbx.repositories.Session;
 import io.zbx.dto.TokenDTO;
 import io.zbx.models.Token;
 import io.zbx.repositories.MemoryDB;
+import io.zbx.repositories.Session;
 import io.zbx.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInsta
 @Service
 public class TokenService {
 
+    private static final String REDIRECT_URI = "http://localhost:8001";
+    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     @Autowired
     private TokenRepository tokenRepository;
-
-    private static final String REDIRECT_URI = "http://localhost:8001";
-
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
 
     private GoogleTokenResponse getAccessToken(TokenDTO tokenDTO) throws Exception {
 

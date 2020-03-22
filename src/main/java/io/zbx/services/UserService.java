@@ -1,10 +1,9 @@
 package io.zbx.services;
 
-import io.zbx.mapper.DataTransferObjectMapper;
-import io.zbx.models.Role;
-import io.zbx.repositories.UserRepository;
-import io.zbx.models.User;
 import io.zbx.dto.UserDTO;
+import io.zbx.mapper.DataTransferObjectMapper;
+import io.zbx.models.User;
+import io.zbx.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
