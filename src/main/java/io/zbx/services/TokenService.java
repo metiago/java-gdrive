@@ -3,7 +3,7 @@ package io.zbx.services;
 import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.drive.Drive;
-import io.zbx.dto.Session;
+import io.zbx.repositories.Session;
 import io.zbx.dto.TokenDTO;
 import io.zbx.models.Token;
 import io.zbx.repositories.MemoryDB;
@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInstance;

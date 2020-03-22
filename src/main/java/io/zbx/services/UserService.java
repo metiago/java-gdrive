@@ -1,8 +1,10 @@
 package io.zbx.services;
 
+import io.zbx.mapper.DataTransferObjectMapper;
+import io.zbx.models.Role;
 import io.zbx.repositories.UserRepository;
 import io.zbx.models.User;
-import io.zbx.models.UserDto;
+import io.zbx.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service(value = "userService")
@@ -24,24 +23,24 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bcryptEncoder;
+    private BCryptPasswordEncoder encoder;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isPresent()) {
+            return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(), getAuthority(user.get()));
+
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
+
+        throw new UsernameNotFoundException("Invalid username or password.");
     }
 
     private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            //authorities.add(new SimpleGrantedAuthority(role.getName()));
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
         return authorities;
-        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     public List<User> findAll() {
@@ -57,7 +56,7 @@ public class UserService implements UserDetailsService {
 
 
     public User findOne(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
 
@@ -66,12 +65,9 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public User save(UserDto user) {
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-        newUser.setAge(user.getAge());
-        newUser.setSalary(user.getSalary());
-        return userRepository.save(newUser);
+    public User save(UserDTO userDTO) {
+        User user = DataTransferObjectMapper.map(userDTO, User.class);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 }

@@ -3,8 +3,10 @@ package io.zbx.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tokens")
 public class Token {
 
     @Id

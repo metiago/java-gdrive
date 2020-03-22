@@ -1,11 +1,14 @@
-package io.zbx.models;
+package io.zbx.dto;
 
-public class UserDto {
+import java.util.Set;
+
+public class UserDTO {
 
     private String username;
+
     private String password;
-    private int age;
-    private int salary;
+
+    private Set<RoleDTO> roles;
 
     public String getUsername() {
         return username;
@@ -23,19 +26,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public int getAge() {
-        return age;
+    public Set<RoleDTO> getRoles() {
+        return roles;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setRoles(Set<RoleDTO> roles) {
+        this.roles = roles;
     }
 }
