@@ -4,6 +4,7 @@ import io.zbx.models.User;
 import io.zbx.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UserEndpoint {
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/users", method = RequestMethod.GET)
-    public List<User> listUser(){
+    public List<User> listUser(Authentication authentication){
         return userService.findAll();
     }
 

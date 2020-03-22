@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/callback/*",
                         "/swagger",
                         "/auth/*",
-                        "/files/*", // TODO remove after auth done
+                        "/files/*", // TODO Remove it after create an endpoint to add users
                         "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",

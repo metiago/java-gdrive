@@ -17,7 +17,12 @@ public class FileService {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
+
     public PageDTO findAll(String pageToken) throws Exception {
+
+        authenticationFacade.getAuthentication();
 
         List<FileDTO> files = new ArrayList<>();
 
