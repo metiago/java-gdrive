@@ -1,4 +1,4 @@
-package io.zbx.endpoints;
+package io.zbx.controllers;
 
 import io.zbx.dto.TokenDTO;
 import io.zbx.services.TokenService;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/authorize")
-public class GoogleOAuthEndpoint {
+@RequestMapping("/callback")
+public class CallbackController {
 
     @Autowired
     private TokenService tokenService;
