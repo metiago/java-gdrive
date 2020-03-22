@@ -1,4 +1,4 @@
-package io.zbx.dto;
+package io.zbx.repositories;
 
 public class Session {
 
