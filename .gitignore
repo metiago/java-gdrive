@@ -1,3 +1,4 @@
 .idea
 spring-security-jwt.iml
 target
+.DS_Store

@@ -18,7 +18,7 @@ import java.util.List;
 @EnableSwagger2
 public class Swagger {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_HEADER = "Bearer";
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
 
@@ -63,7 +63,7 @@ public class Swagger {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("JWT", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference("Bearer", authorizationScopes));
     }
 
 }
