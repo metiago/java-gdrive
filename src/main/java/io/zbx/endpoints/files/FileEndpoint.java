@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.zbx.dto.FileDTO;
+import io.zbx.dto.PageDTO;
 import io.zbx.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,12 @@ public class FileEndpoint {
     @Autowired
     private FileService fileService;
 
+    @ApiOperation(value = "Find all files using pagination limit of 10 records.")
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<List<FileDTO>> findAll() throws Exception {
-        List<FileDTO> files = fileService.findAll();
-        return new ResponseEntity<>(files, HttpStatus.OK);
+    public ResponseEntity<PageDTO> findAll(@ApiParam(value = "Token to the next page")
+                                           @RequestParam(value = "pageToken", required = false) String pageToken) throws Exception {
+        PageDTO page = fileService.findAll(pageToken);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find files that match a given name.")

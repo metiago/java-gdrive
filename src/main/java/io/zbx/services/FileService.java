@@ -3,6 +3,7 @@ package io.zbx.services;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.zbx.dto.FileDTO;
+import io.zbx.dto.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +17,28 @@ public class FileService {
     @Autowired
     private TokenService tokenService;
 
-    public List<FileDTO> findAll() throws Exception {
+    public PageDTO findAll(String pageToken) throws Exception {
 
         List<FileDTO> files = new ArrayList<>();
 
-        String pageToken = null;
+        FileList result = tokenService.getDrive().files().list()
+                .setPageSize(10)
+                .setSpaces("drive")
+                .setFields("nextPageToken, files(id, name)")
+                .setPageToken(pageToken)
+                .execute();
 
-        do {
+        pageToken = result.getNextPageToken();
 
-            FileList result = tokenService.getDrive().files().list()
-//                    .setQ("mimeType = 'application/vnd.google-apps.folder'")
-                    .setSpaces("drive")
-                    .setFields("nextPageToken, files(id, name)")
-                    .setPageToken(pageToken)
-                    .execute();
+        for (File f : result.getFiles()) {
+            files.add(new FileDTO(f.getId(), f.getName(), f.getMimeType()));
+        }
 
-            result.getFiles().forEach(f -> files.add(new FileDTO(f.getId(), f.getName(), f.getMimeType())));
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setPageToken(pageToken);
+        pageDTO.setFiles(files);
 
-            pageToken = result.getNextPageToken();
-
-        } while (pageToken != null);
-
-        return files;
+        return pageDTO;
     }
 
     public List<FileDTO> contains(String text) throws Exception {

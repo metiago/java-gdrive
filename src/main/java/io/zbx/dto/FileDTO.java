@@ -13,6 +13,7 @@ public class FileDTO {
     private String mimeType;
 
     public FileDTO() {
+
     }
 
     public FileDTO(String id, String name, String mimeType) {
