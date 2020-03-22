@@ -3,16 +3,16 @@ package io.zbx.models;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_gen")
+    @SequenceGenerator(sequenceName = "role_seq", allocationSize = 1, name = "role_gen")
     private long id;
 
-    @Column
     private String name;
 
-    @Column
     private String description;
 
     public long getId() {
