@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/",
                         "/callback/*",
                         "/swagger",
-                        "/token/*",
+                        "/auth/*",
                         "/files/*", // TODO remove after auth done
                         "/v2/api-docs",
                         "/configuration/ui",
