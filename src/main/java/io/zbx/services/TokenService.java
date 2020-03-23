@@ -40,7 +40,6 @@ public class TokenService {
             throw new FileNotFoundException("Resource not found: " + Constants.CREDENTIALS_FILE_PATH);
         }
 
-        // Exchange auth code for access token
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(getDefaultInstance(), new InputStreamReader(in));
 
         GoogleTokenResponse tokenResponse =
