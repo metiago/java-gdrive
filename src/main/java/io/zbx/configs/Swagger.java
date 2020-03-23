@@ -19,7 +19,7 @@ public class Swagger {
 
     public static final String DEFAULT_INCLUDE_PATTERN = "/.*";
 
-    private static final String SETTINGS_PKG = "io.zbx.endpoints.files";
+    private static final String SETTINGS_PKG = "io.zbx.endpoints";
 
     @Bean
     public Docket swaggerSettingsEndpoint() {

@@ -1,11 +1,14 @@
 package io.zbx.services;
 
+import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.zbx.dto.FileDTO;
 import io.zbx.dto.PageDTO;
+import io.zbx.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -127,6 +130,24 @@ public class FileService {
         fileMetadata.setName(fileDTO.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
+    }
+
+    public FileDTO upload(MultipartFile files) throws Exception {
+
+        String dest = System.getProperty("user.home") + "/" + files.getOriginalFilename();
+        FileUtils.copyFileTo(dest, files.getBytes());
+
+        File fileMetadata = new File();
+        fileMetadata.setName(files.getOriginalFilename());
+        fileMetadata.setMimeType(files.getContentType());
+        java.io.File uploadedFile = new java.io.File(dest);
+
+        FileContent mediaContent = new FileContent(files.getContentType(), uploadedFile);
+        File file = this.tokenService.getDrive().files().create(fileMetadata, mediaContent).setFields("id").execute();
+
+        uploadedFile.delete();
+
+        return new FileDTO(file.getId());
     }
 
 //    public ByteArrayOutputStream listAllFiles() throws Exception {
