@@ -21,6 +21,8 @@ public class HttpInterceptor implements HandlerInterceptor {
 
         if(url.equals("/swagger-ui.html") && session.getAttribute(Constants.SESSION_NAME) == null) {
             response.sendRedirect("/");
+        } else if(url.equals("/") && session.getAttribute(Constants.SESSION_NAME) != null) {
+            response.sendRedirect("/swagger-ui.html");
         }
 
         return true;
