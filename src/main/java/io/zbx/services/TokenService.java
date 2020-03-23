@@ -4,18 +4,18 @@ import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.drive.Drive;
 import io.zbx.dto.TokenDTO;
+import io.zbx.exceptions.SessionNotFoundException;
 import io.zbx.models.Token;
-import io.zbx.repositories.MemoryDB;
-import io.zbx.repositories.Session;
 import io.zbx.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInstance;
 
@@ -24,11 +24,19 @@ import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInsta
 public class TokenService {
 
     private static final String REDIRECT_URI = "http://localhost:8001";
+
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+
+    private static final String SESSION_NAME = "SUBJECT_ID";
+
+    private HttpSession session;
+
     @Autowired
     private TokenRepository tokenRepository;
-    @Autowired
-    private AuthenticationFacade authenticationFacade;
+
+    public TokenService(HttpSession session) {
+        this.session = session;
+    }
 
     private GoogleTokenResponse getAccessToken(TokenDTO tokenDTO) throws Exception {
 
@@ -59,32 +67,17 @@ public class TokenService {
 
     public Drive getDrive() throws Exception {
 
-        Iterable<Token> tokens = tokenRepository.findAll();
+        String session = (String) this.session.getAttribute(SESSION_NAME);
 
-        List<Token> list = new ArrayList<>();
-        tokens.forEach(o -> list.add(o));
+        Optional<Token> token = tokenRepository.findBySubjectID(session);
 
-        String accessToken = list.stream().findFirst().get().getAccessToken();
+        String subjectID = token.isPresent() ? token.get().getAccessToken() : null;
 
-        // TODO
-//        for (Token token : tokens) {
-//
-//            for (Session session : MemoryDB.instance().all()) {
-//
-//                if (token.getId().equals(session.getId())) {
-//                    accessToken = token.getAccessToken();
-//                    break;
-//                } else {
-//                    throw new IllegalStateException("User not logged in.");
-//                }
-//            }
-//        }
-
-        GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
+        GoogleCredential credential = new GoogleCredential().setAccessToken(subjectID);
         return new Drive.Builder(new NetHttpTransport(), getDefaultInstance(), credential).setApplicationName("ZBX").build();
     }
 
-    public void save(TokenDTO tokenDTO) throws Exception {
+    public void save(TokenDTO tokenDTO, HttpServletRequest request) throws Exception {
 
         GoogleTokenResponse googleTokenResponse = this.getAccessToken(tokenDTO);
 
@@ -103,8 +96,9 @@ public class TokenService {
         token.setLocale((String) payload.get("locale"));
         token.setFamilyName((String) payload.get("family_name"));
         token.setGivenName((String) payload.get("given_name"));
+
         tokenRepository.save(token);
 
-        MemoryDB.instance().add(new Session(payload.getSubject(), googleTokenResponse.getAccessToken()));
+        request.getSession().setAttribute(SESSION_NAME, payload.getSubject());
     }
 }

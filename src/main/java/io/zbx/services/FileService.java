@@ -7,6 +7,7 @@ import io.zbx.dto.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,8 +15,14 @@ import java.util.List;
 @Service
 public class FileService {
 
-    @Autowired
     private TokenService tokenService;
+
+    private HttpSession httpSession;
+
+    @Autowired
+    public FileService(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 
     public PageDTO findAll(String pageToken) throws Exception {
 

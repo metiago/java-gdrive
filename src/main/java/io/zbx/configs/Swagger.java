@@ -33,8 +33,8 @@ public class Swagger {
                 .apis(RequestHandlerSelectors.basePackage(SETTINGS_PKG))
                 .paths(PathSelectors.any())
                 .build()
-                .securityContexts(Lists.newArrayList(securityContext()))
-                .securitySchemes(Lists.newArrayList(apiKey()))
+                // .securityContexts(Lists.newArrayList(securityContext()))
+                // .securitySchemes(Lists.newArrayList(apiKey()))
                 .apiInfo(apiInfo());
     }
 
@@ -52,18 +52,17 @@ public class Swagger {
         return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
     }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
-                .build();
-    }
-
-    List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("Bearer", authorizationScopes));
-    }
-
+//    private SecurityContext securityContext() {
+//        return SecurityContext.builder()
+//                .securityReferences(defaultAuth())
+//                .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+//                .build();
+//    }
+//
+//    List<SecurityReference> defaultAuth() {
+//        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+//        authorizationScopes[0] = authorizationScope;
+//        return Lists.newArrayList(new SecurityReference("Bearer", authorizationScopes));
+//    }
 }

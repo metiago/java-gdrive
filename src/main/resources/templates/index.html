@@ -2,16 +2,16 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
-  <title>Google Drive File Manager</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1.0" name="viewport"/>
+    <title>Google Drive File Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script async defer src="https://apis.google.com/js/client:platform.js?onload=start"></script>
 
-  <script>
+    <script>
 
     function start() {
 
@@ -26,36 +26,37 @@
 
     }
 
-  </script>
+
+    </script>
 
 </head>
 
 <body>
 
-  <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">😎</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#"></a></li>
-      </ul>
+<nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a class="brand-logo" href="#" id="logo-container">😎</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="#"></a></li>
+        </ul>
     </div>
-  </nav>
+</nav>
 
-  <div class="section no-pad-bot" id="index-banner">
+<div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br>
-      <h1 class="header center orange-text"> Google Drive File Management </h1>
-      <div class="row center">
-        <h5 class="header col s12 light">This application uses the Google Drive API to manage your files</h5>
-      </div>
-      <div class="row center">
-        <a id="signinButton" href="#" class="btn-large waves-effect waves-light orange">Get Started</a>
-      </div>
-      <br><br>
+        <br><br>
+        <h1 class="header center orange-text"> Google Drive File Management </h1>
+        <div class="row center">
+            <h5 class="header col s12 light">This application uses the Google Drive API to manage your files</h5>
+        </div>
+        <div class="row center">
+            <a class="btn-large waves-effect waves-light orange" href="#" id="signinButton">Get Started</a>
+        </div>
+        <br><br>
     </div>
-  </div>
+</div>
 
 
-  <script>
+<script>
 
     $('#signinButton').click(function () {
       auth2.grantOfflineAccess().then(signInCallback).catch(e => console.log(e));
@@ -90,9 +91,10 @@
       }
     }
 
-  </script>
 
-  <style>
+</script>
+
+<style>
     .light-blue.lighten-1 {
       background-color: #478FCD !important;
     }
@@ -102,7 +104,8 @@
     .orange {
       background-color: #5FAD46 !important;
     }
-  </style>
+
+</style>
 
 
 </body>
