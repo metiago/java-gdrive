@@ -5,14 +5,16 @@ This is a web API which expose some methods to manage files in Google Drive.
 The consent is given via Google OAuth2 during the authentication phase for any user who accept the
 requested permissions.
 
-#### For Developers
+#### Compile and running
 
-The Swagger UI can be found at: `http://localhost:8001/swagger-ui.html`
+Below there are the command to build and run this application
+```bash
+# compile
+mvn clean package
 
-#### Tech Stack
+# run
+java -jar target/zbx-1.0-SNAPSHOT.jar
 
- 1. Spring Boot
- 2.  JWT 
- 3.  Postgres SQL
- 4. Java 1.8
-
+# deploy to GAE
+mvn clean package appengine:deploy
+```
