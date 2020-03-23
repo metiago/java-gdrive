@@ -1,18 +1,15 @@
 package io.zbx.configs;
 
-import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -40,7 +37,7 @@ public class Swagger {
 
     private ApiInfo apiInfo() {
         Contact contact = new Contact("Mr. Souza", "https://metiago.github.io", "tiagotg.ribeiro@gmail.com");
-        ApiInfo apiInfo = new ApiInfo("ZBX2", "This is a web API integrated directly with Google Drive API.",
+        ApiInfo apiInfo = new ApiInfo("ZBX2", Constants.SWAGGER_API_DESCRIPTION,
                 "0.1.0", "Terms of service",
                 contact,
                 "Apache 2.0",

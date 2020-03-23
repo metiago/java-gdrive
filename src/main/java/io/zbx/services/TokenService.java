@@ -3,8 +3,8 @@ package io.zbx.services;
 import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.drive.Drive;
+import io.zbx.configs.Constants;
 import io.zbx.dto.TokenDTO;
-import io.zbx.exceptions.SessionNotFoundException;
 import io.zbx.models.Token;
 import io.zbx.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +23,6 @@ import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInsta
 @Service
 public class TokenService {
 
-    private static final String REDIRECT_URI = "http://localhost:8001";
-
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-
-    private static final String SESSION_NAME = "SUBJECT_ID";
-
     private HttpSession session;
 
     @Autowired
@@ -40,10 +34,10 @@ public class TokenService {
 
     private GoogleTokenResponse getAccessToken(TokenDTO tokenDTO) throws Exception {
 
-        InputStream in = FileService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = FileService.class.getResourceAsStream(Constants.CREDENTIALS_FILE_PATH);
 
         if (in == null) {
-            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+            throw new FileNotFoundException("Resource not found: " + Constants.CREDENTIALS_FILE_PATH);
         }
 
         // Exchange auth code for access token
@@ -57,7 +51,7 @@ public class TokenService {
                         clientSecrets.getDetails().getClientId(),
                         clientSecrets.getDetails().getClientSecret(),
                         tokenDTO.getCode(),
-                        REDIRECT_URI)  // Specify the same redirect URI that you use with your web
+                        Constants.REDIRECT_URI)  // Specify the same redirect URI that you use with your web
                         // app. If you don't have a web version of your app, you can
                         // specify an empty string.
                         .execute();
@@ -67,7 +61,7 @@ public class TokenService {
 
     public Drive getDrive() throws Exception {
 
-        String session = (String) this.session.getAttribute(SESSION_NAME);
+        String session = (String) this.session.getAttribute(Constants.SESSION_NAME);
 
         Optional<Token> token = tokenRepository.findBySubjectID(session);
 
@@ -99,6 +93,6 @@ public class TokenService {
 
         tokenRepository.save(token);
 
-        request.getSession().setAttribute(SESSION_NAME, payload.getSubject());
+        request.getSession().setAttribute(Constants.SESSION_NAME, payload.getSubject());
     }
 }
