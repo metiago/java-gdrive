@@ -1,6 +1,7 @@
 package io.zbx.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,9 @@ public class FileDTO {
     private String name;
 
     private String mimeType;
+
+    @JsonIgnore
+    private byte[] binary;
 
     public FileDTO() {
 
@@ -51,6 +55,14 @@ public class FileDTO {
 
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
+    }
+
+    public byte[] getBinary() {
+        return binary;
+    }
+
+    public void setBinary(byte[] binary) {
+        this.binary = binary;
     }
 }
 
