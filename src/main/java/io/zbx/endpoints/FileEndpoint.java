@@ -26,7 +26,7 @@ public class FileEndpoint {
     @Autowired
     private FileService fileService;
 
-    @ApiOperation(value = "Find all files using pagination limit of 10 records.")
+    @ApiOperation(value = "Find all files with a pre defined pagination limit of 10 records.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "It returns an array of files."),
             @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -47,7 +47,7 @@ public class FileEndpoint {
         return new ResponseEntity<>(file, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Find files that match a given name.")
+    @ApiOperation(value = "Search for files that match a given name.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "If it is a folder it'll return a list of files otherwise an empty array."),
             @ApiResponse(code = 401, message = "Unauthorized."),
             @ApiResponse(code = 404, message = "File not found")})
@@ -59,7 +59,7 @@ public class FileEndpoint {
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Find files which contains a given text.")
+    @ApiOperation(value = "Search for files which contains any character.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "If it is a folder it'll return a list of files otherwise an empty array."),
             @ApiResponse(code = 401, message = "Unauthorized."),
             @ApiResponse(code = 404, message = "File not found.")})
@@ -70,7 +70,7 @@ public class FileEndpoint {
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "List all files inside a folder based on its ID.")
+    @ApiOperation(value = "List all files using an IN clause matching its ID.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "If it is a folder it'll return a list of files which is " +
                                                               "inside it otherwise it's a file and return an empty array."),
             @ApiResponse(code = 401, message = "Unauthorized."),
@@ -82,21 +82,22 @@ public class FileEndpoint {
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Create a new folder in the drive.")
+    @ApiOperation(value = "Create a new folder in the drive or inside a folder If the ID is provided.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Folder has been created successfully."),
             @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/folder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createFolder(@Valid @RequestBody FileDTO fileDTO) throws Exception {
-        fileService.createFolder(fileDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<FileDTO> createFolder(@Valid @RequestBody FileDTO fileDTO) throws Exception {
+        FileDTO result = fileService.createFolder(fileDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Upload a new file to drive.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns the file ID."),
                           @ApiResponse(code = 401, message = "Unauthorized.")})
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FileDTO> upload(@RequestPart(value = "file") MultipartFile files) throws Exception {
-        FileDTO fileDTO = fileService.upload(files);
+    @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FileDTO> upload(@RequestPart(value = "file") MultipartFile files,
+                                          @RequestParam(value = "id", required = false) String id) throws Exception {
+        FileDTO fileDTO = fileService.upload(files, id);
         return new ResponseEntity<>(fileDTO, HttpStatus.OK);
     }
 
