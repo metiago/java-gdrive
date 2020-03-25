@@ -116,6 +116,5 @@ public class FileEndpoint {
     }
 
     // TODO
-    //  Add endpoint to download file
     //  Put credentials.json env vars
 }

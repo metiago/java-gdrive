@@ -159,7 +159,7 @@ public class FileService {
         FileContent mediaContent = new FileContent(files.getContentType(), file);
         File result = this.tokenService.getDrive().files().create(fileMetadata, mediaContent).setFields("id, parents").execute();
 
-        file.delete();
+        FileUtils.deleteFile(file);
 
         return new FileDTO(result.getId());
     }
