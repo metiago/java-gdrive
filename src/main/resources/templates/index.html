@@ -72,7 +72,7 @@
         $.ajax({
 
           type: 'POST',
-          url: window.location.href + '/callback/auth-code',
+          url: 'https://java-gdrive.herokuapp.com/callback/auth-code',
           // Always include an `X-Requested-With` header in every AJAX request to protect against CSRF attacks.
           headers: {
             'X-Requested-With': 'XMLHttpRequest'
