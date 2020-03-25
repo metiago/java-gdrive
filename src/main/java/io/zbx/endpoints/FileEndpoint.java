@@ -84,17 +84,30 @@ public class FileEndpoint {
 
     @ApiOperation(value = "Create a new folder in the drive or inside a folder If the ID is provided.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Folder has been created successfully."),
-            @ApiResponse(code = 401, message = "Unauthorized.")})
+                           @ApiResponse(code = 404, message = "File not found If the ID doesn't exists."),
+                           @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/folder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileDTO> createFolder(@Valid @RequestBody FileDTO fileDTO) throws Exception {
         FileDTO result = fileService.createFolder(fileDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create a new folder inside an existent one based on its ID.")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Folder has been created successfully."),
+                           @ApiResponse(code = 404, message = "File not found If the ID doesn't exists."),
+                           @ApiResponse(code = 401, message = "Unauthorized.")})
+    @RequestMapping(value = "/folder/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FileDTO> updateFolder(@Valid @RequestBody FileDTO fileDTO,
+                                                @RequestParam(value = "id") String id) throws Exception {
+        FileDTO result = fileService.updateFolder(fileDTO, id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Upload a new file to drive.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns the file ID."),
                           @ApiResponse(code = 401, message = "Unauthorized.")})
-    @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                                                                         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileDTO> upload(@RequestPart(value = "file") MultipartFile files,
                                           @RequestParam(value = "id", required = false) String id) throws Exception {
         FileDTO fileDTO = fileService.upload(files, id);

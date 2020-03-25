@@ -134,9 +134,15 @@ public class FileService {
 
     public FileDTO createFolder(FileDTO fileDTO) throws Exception {
         File fileMetadata = new File();
-        if (fileDTO.getId() != null && !"".equals(fileDTO.getId())) {
-            fileMetadata.setParents(Collections.singletonList(fileDTO.getId()));
-        }
+        fileMetadata.setName(fileDTO.getName());
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+        File result = this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
+        return new FileDTO(result.getId(), result.getName(), result.getMimeType());
+    }
+
+    public FileDTO updateFolder(FileDTO fileDTO, String id) throws Exception {
+        File fileMetadata = new File();
+        fileMetadata.setParents(Collections.singletonList(id));
         fileMetadata.setName(fileDTO.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         File result = this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
@@ -149,7 +155,7 @@ public class FileService {
         FileUtils.copyFileTo(dest, files.getBytes());
 
         File fileMetadata = new File();
-        if("".equals(id)) {
+        if ("".equals(id)) {
             fileMetadata.setParents(Collections.singletonList(id));
         }
         fileMetadata.setName(files.getOriginalFilename());
