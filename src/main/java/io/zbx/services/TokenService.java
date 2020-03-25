@@ -52,7 +52,7 @@ public class TokenService {
                         new NetHttpTransport(),
                         getDefaultInstance(),
                         Constants.TOKEN_URL,
-                        clientSecrets.getDetails().getClientSecret(),
+                        clientSecrets.getDetails().getClientId(),
                         env.getProperty("CLIENT_SECRET"),
                         tokenDTO.getCode(),
                         clientSecrets.getDetails().getRedirectUris().get(0))  // Specify the same redirect URI that you use with your web
