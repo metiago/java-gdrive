@@ -2,3 +2,6 @@
 spring-security-jwt.iml
 target
 .DS_Store
+.classpath
+.settings
+.project
