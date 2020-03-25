@@ -1,5 +1,6 @@
 package io.zbx.services;
 
+
 import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.drive.Drive;
@@ -64,7 +65,7 @@ public class TokenService {
 
         Optional<Token> token = tokenRepository.findBySubjectID(session);
 
-        String subjectID = token.isPresent() ? token.get().getAccessToken() : null;
+        String subjectID = token.map(Token::getAccessToken).orElse(null);
 
         GoogleCredential credential = new GoogleCredential().setAccessToken(subjectID);
         return new Drive.Builder(new NetHttpTransport(), getDefaultInstance(), credential).setApplicationName("ZBX").build();
@@ -83,7 +84,7 @@ public class TokenService {
         token.setCode(tokenDTO.getCode());
         token.setAccessToken(googleTokenResponse.getAccessToken());
         token.setEmail(payload.getEmail());
-        token.setEmailVerified(Boolean.valueOf(payload.getEmailVerified()));
+        token.setEmailVerified(payload.getEmailVerified());
         token.setName((String) payload.get("name"));
         token.setPictureUrl((String) payload.get("picture"));
         token.setLocale((String) payload.get("locale"));
