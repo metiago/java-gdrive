@@ -2,7 +2,7 @@ package io.zbx.configs;
 
 public class Constants {
 
-    public static final String REDIRECT_URI = "https://java-gdrive.herokuapp.com";
+    public static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
 
     public static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 

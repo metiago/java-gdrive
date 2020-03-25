@@ -21,9 +21,7 @@
           // Scopes to request in addition to 'profile' and 'email'
           scope: 'https://www.googleapis.com/auth/drive.file'
         });
-
       });
-
     }
 
 
@@ -72,7 +70,7 @@
         $.ajax({
 
           type: 'POST',
-          url: 'https://java-gdrive.herokuapp.com/callback/auth-code',
+          url: 'http://localhost:8001/callback/auth-code',
           // Always include an `X-Requested-With` header in every AJAX request to protect against CSRF attacks.
           headers: {
             'X-Requested-With': 'XMLHttpRequest'

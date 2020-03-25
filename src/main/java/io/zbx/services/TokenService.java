@@ -9,6 +9,7 @@ import io.zbx.dto.TokenDTO;
 import io.zbx.models.Token;
 import io.zbx.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,9 @@ public class TokenService {
     @Autowired
     private TokenRepository tokenRepository;
 
+    @Autowired
+    private Environment env;
+
     public TokenService(HttpSession session) {
         this.session = session;
     }
@@ -47,11 +51,11 @@ public class TokenService {
                 new GoogleAuthorizationCodeTokenRequest(
                         new NetHttpTransport(),
                         getDefaultInstance(),
-                        "https://oauth2.googleapis.com/token",
-                        clientSecrets.getDetails().getClientId(),
+                        Constants.TOKEN_URL,
                         clientSecrets.getDetails().getClientSecret(),
+                        env.getProperty("CLIENT_SECRET"),
                         tokenDTO.getCode(),
-                        Constants.REDIRECT_URI)  // Specify the same redirect URI that you use with your web
+                        clientSecrets.getDetails().getRedirectUris().get(0))  // Specify the same redirect URI that you use with your web
                         // app. If you don't have a web version of your app, you can
                         // specify an empty string.
                         .execute();
