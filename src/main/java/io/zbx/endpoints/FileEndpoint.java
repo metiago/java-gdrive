@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.zbx.dto.FileDTO;
+import io.zbx.dto.FolderDTO;
 import io.zbx.dto.PageDTO;
 import io.zbx.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +88,8 @@ public class FileEndpoint {
                            @ApiResponse(code = 404, message = "File not found If the ID doesn't exists."),
                            @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/folder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FileDTO> createFolder(@Valid @RequestBody FileDTO fileDTO) throws Exception {
-        FileDTO result = fileService.createFolder(fileDTO);
+    public ResponseEntity<FileDTO> createFolder(@Valid @RequestBody FolderDTO folderDTO) throws Exception {
+        FileDTO result = fileService.createFolder(folderDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -97,9 +98,9 @@ public class FileEndpoint {
                            @ApiResponse(code = 404, message = "File not found If the ID doesn't exists."),
                            @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/folder/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FileDTO> updateFolder(@Valid @RequestBody FileDTO fileDTO,
+    public ResponseEntity<FileDTO> updateFolder(@Valid @RequestBody FolderDTO folderDTO,
                                                 @RequestParam(value = "id") String id) throws Exception {
-        FileDTO result = fileService.updateFolder(fileDTO, id);
+        FileDTO result = fileService.updateFolder(folderDTO, id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

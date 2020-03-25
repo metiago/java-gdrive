@@ -4,6 +4,7 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.zbx.dto.FileDTO;
+import io.zbx.dto.FolderDTO;
 import io.zbx.dto.PageDTO;
 import io.zbx.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,18 +133,18 @@ public class FileService {
         return new FileDTO(result.getId(), result.getName(), result.getMimeType());
     }
 
-    public FileDTO createFolder(FileDTO fileDTO) throws Exception {
+    public FileDTO createFolder(FolderDTO folderDTO) throws Exception {
         File fileMetadata = new File();
-        fileMetadata.setName(fileDTO.getName());
+        fileMetadata.setName(folderDTO.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         File result = this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
         return new FileDTO(result.getId(), result.getName(), result.getMimeType());
     }
 
-    public FileDTO updateFolder(FileDTO fileDTO, String id) throws Exception {
+    public FileDTO updateFolder(FolderDTO folderDTO, String id) throws Exception {
         File fileMetadata = new File();
         fileMetadata.setParents(Collections.singletonList(id));
-        fileMetadata.setName(fileDTO.getName());
+        fileMetadata.setName(folderDTO.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         File result = this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
         return new FileDTO(result.getId(), result.getName(), result.getMimeType());
