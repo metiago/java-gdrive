@@ -114,7 +114,4 @@ public class FileEndpoint {
         headers.set("Content-Disposition", "attachment; filename=\"" + file.getName());
         return new ResponseEntity<>(file.getBinary(), headers, HttpStatus.OK);
     }
-
-    // TODO
-    //  Put credentials.json env vars
 }
