@@ -67,6 +67,7 @@ public class FileEndpoint {
     @RequestMapping(value = "/contains", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FileDTO>> contains(@ApiParam(value = "Any character", required = true)
                                                   @RequestParam(value = "text") String text) throws Exception {
+
         List<FileDTO> files = fileService.contains(text);
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
@@ -79,6 +80,7 @@ public class FileEndpoint {
     @RequestMapping(value = "/in", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FileDTO>> in(@ApiParam(value = "ID of a existing file", required = true)
                                             @RequestParam(value = "id") String id) throws Exception {
+
         List<FileDTO> files = fileService.in(id);
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
@@ -89,6 +91,7 @@ public class FileEndpoint {
                            @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/folder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileDTO> createFolder(@Valid @RequestBody FolderDTO folderDTO) throws Exception {
+
         FileDTO result = fileService.createFolder(folderDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -99,17 +102,20 @@ public class FileEndpoint {
                            @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/folder/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileDTO> updateFolder(@Valid @RequestBody FolderDTO folderDTO,
+                                                @ApiParam(value = "ID of a existing folder", required = true)
                                                 @RequestParam(value = "id") String id) throws Exception {
+
         FileDTO result = fileService.updateFolder(folderDTO, id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Upload a new file to drive.")
+    @ApiOperation(value = "Upload a new file to drive. If passing a folder ID it will upload into it.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns the file ID."),
                           @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
                                                                          produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileDTO> upload(@RequestPart(value = "file") MultipartFile files,
+                                          @ApiParam(value = "ID of a existing folder", required = true)
                                           @RequestParam(value = "id", required = false) String id) throws Exception {
         FileDTO fileDTO = fileService.upload(files, id);
         return new ResponseEntity<>(fileDTO, HttpStatus.OK);
@@ -120,7 +126,7 @@ public class FileEndpoint {
                            @ApiResponse(code = 401, message = "Unauthorized.")})
     @RequestMapping(value = "/download", method = RequestMethod.POST)
     public ResponseEntity<byte[]> download(@ApiParam(value = "ID of a existing file", required = true)
-                                             @RequestParam(value = "id") String id) throws Exception {
+                                           @RequestParam(value = "id") String id) throws Exception {
 
         FileDTO file = fileService.download(id);
         HttpHeaders headers = new HttpHeaders();
