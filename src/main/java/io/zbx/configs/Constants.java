@@ -2,7 +2,7 @@ package io.zbx.configs;
 
 public class Constants {
 
-    public static final String REDIRECT_URI = "http://localhost:8001";
+    public static final String REDIRECT_URI = "https://java-gdrive.herokuapp.com";
 
     public static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
