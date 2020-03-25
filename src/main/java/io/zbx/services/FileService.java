@@ -34,16 +34,16 @@ public class FileService {
         List<FileDTO> files = new ArrayList<>();
 
         FileList result = tokenService.getDrive().files().list()
-                .setPageSize(10)
-                .setSpaces("drive")
-                .setFields("nextPageToken, files(id, name)")
-                .setPageToken(pageToken)
-                .execute();
+                                                         .setPageSize(10)
+                                                         .setSpaces("drive")
+                                                         .setFields("nextPageToken, files(id, name)")
+                                                         .setPageToken(pageToken)
+                                                         .execute();
 
         pageToken = result.getNextPageToken();
 
-        for (File f : result.getFiles()) {
-            files.add(new FileDTO(f.getId(), f.getName(), f.getMimeType()));
+        for (File file : result.getFiles()) {
+            files.add(new FileDTO(file.getId(), file.getName(), file.getMimeType()));
         }
 
         PageDTO pageDTO = new PageDTO();
@@ -62,14 +62,14 @@ public class FileService {
         do {
 
             FileList result = tokenService.getDrive().files().list()
-//                    .setQ("mimeType = 'application/vnd.google-apps.folder'")
-                    .setQ(String.format("name contains '%s'", text))
-                    .setSpaces("drive")
-                    .setFields("nextPageToken, files(id, name, mimeType)")
-                    .setPageToken(pageToken)
-                    .execute();
+                                                             //.setQ("mimeType = 'application/vnd.google-apps.folder'")
+                                                             .setQ(String.format("name contains '%s'", text))
+                                                             .setSpaces("drive")
+                                                             .setFields("nextPageToken, files(id, name, mimeType)")
+                                                             .setPageToken(pageToken)
+                                                             .execute();
 
-            result.getFiles().forEach(f -> files.add(new FileDTO(f.getId(), f.getName(), f.getMimeType())));
+            result.getFiles().forEach(file -> files.add(new FileDTO(file.getId(), file.getName(), file.getMimeType())));
 
             pageToken = result.getNextPageToken();
 
@@ -87,13 +87,13 @@ public class FileService {
         do {
 
             FileList result = tokenService.getDrive().files().list()
-                    .setQ(String.format("'%s' in parents", id))
-                    .setSpaces("drive")
-                    .setFields("nextPageToken, files(id, name)")
-                    .setPageToken(pageToken)
-                    .execute();
+                                                             .setQ(String.format("'%s' in parents", id))
+                                                             .setSpaces("drive")
+                                                             .setFields("nextPageToken, files(id, name)")
+                                                             .setPageToken(pageToken)
+                                                             .execute();
 
-            result.getFiles().forEach(f -> files.add(new FileDTO(f.getId(), f.getName(), f.getMimeType())));
+            result.getFiles().forEach(file -> files.add(new FileDTO(file.getId(), file.getName(), file.getMimeType())));
 
             pageToken = result.getNextPageToken();
 
@@ -111,13 +111,13 @@ public class FileService {
         do {
 
             FileList result = tokenService.getDrive().files().list()
-                    .setQ(String.format("name = '%s'", name))
-                    .setSpaces("drive")
-                    .setFields("nextPageToken, files(id, name)")
-                    .setPageToken(pageToken)
-                    .execute();
+                                                             .setQ(String.format("name = '%s'", name))
+                                                             .setSpaces("drive")
+                                                             .setFields("nextPageToken, files(id, name)")
+                                                             .setPageToken(pageToken)
+                                                             .execute();
 
-            result.getFiles().forEach(f -> files.add(new FileDTO(f.getId(), f.getName(), f.getMimeType())));
+            result.getFiles().forEach(file -> files.add(new FileDTO(file.getId(), file.getName(), file.getMimeType())));
 
             pageToken = result.getNextPageToken();
 
@@ -134,36 +134,46 @@ public class FileService {
     }
 
     public FileDTO createFolder(FolderDTO folderDTO) throws Exception {
+
         File fileMetadata = new File();
         fileMetadata.setName(folderDTO.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
+
         File result = this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
+
         return new FileDTO(result.getId(), result.getName(), result.getMimeType());
     }
 
     public FileDTO updateFolder(FolderDTO folderDTO, String id) throws Exception {
+
         File fileMetadata = new File();
         fileMetadata.setParents(Collections.singletonList(id));
         fileMetadata.setName(folderDTO.getName());
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
+
         File result = this.tokenService.getDrive().files().create(fileMetadata).setFields("id").execute();
+
         return new FileDTO(result.getId(), result.getName(), result.getMimeType());
     }
 
     public FileDTO upload(MultipartFile files, String id) throws Exception {
 
         String dest = System.getProperty("user.home") + "/" + files.getOriginalFilename();
+
         FileUtils.copyFileTo(dest, files.getBytes());
 
         File fileMetadata = new File();
-        if ("".equals(id)) {
+
+        if (id != null && !"".equals(id)) {
             fileMetadata.setParents(Collections.singletonList(id));
         }
+
         fileMetadata.setName(files.getOriginalFilename());
         fileMetadata.setMimeType(files.getContentType());
         java.io.File file = new java.io.File(dest);
 
         FileContent mediaContent = new FileContent(files.getContentType(), file);
+
         File result = this.tokenService.getDrive().files().create(fileMetadata, mediaContent).setFields("id, parents").execute();
 
         FileUtils.deleteFile(file);
