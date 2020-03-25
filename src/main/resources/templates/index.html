@@ -70,7 +70,7 @@
         $.ajax({
 
           type: 'POST',
-          url: 'http://localhost:8001/callback/auth-code',
+          url: window.location.href + '/callback/auth-code',
           // Always include an `X-Requested-With` header in every AJAX request to protect against CSRF attacks.
           headers: {
             'X-Requested-With': 'XMLHttpRequest'
