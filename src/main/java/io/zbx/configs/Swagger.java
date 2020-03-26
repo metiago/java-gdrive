@@ -1,7 +1,9 @@
 package io.zbx.configs;
 
+import com.google.api.services.drive.model.File;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -9,6 +11,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Collections;
 
 @Configuration
@@ -30,6 +36,7 @@ public class Swagger {
                 .apis(RequestHandlerSelectors.basePackage(SETTINGS_PKG))
                 .paths(PathSelectors.any())
                 .build()
+                .ignoredParameterTypes(File.class, InputStream.class, URI.class, URL.class, URLStreamHandler.class, Resource.class)
                 // .securityContexts(Lists.newArrayList(securityContext()))
                 // .securitySchemes(Lists.newArrayList(apiKey()))
                 .apiInfo(apiInfo());
