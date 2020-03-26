@@ -44,6 +44,20 @@ public class FileEndpoint implements FileEndpointInterface {
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@RequestParam(value = "id") String id) throws Exception {
+
+        fileService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<Void> emptyTrash() throws Exception {
+
+        fileService.emptyTrash();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @RequestMapping(value = "/contains", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FileDTO>> contains(@RequestParam(value = "text") String text) throws Exception {
 

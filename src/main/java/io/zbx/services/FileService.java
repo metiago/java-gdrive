@@ -1,6 +1,7 @@
 package io.zbx.services;
 
 import com.google.api.client.http.FileContent;
+import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.zbx.dto.FileDTO;
@@ -126,6 +127,14 @@ public class FileService {
         return files;
     }
 
+    public void delete(String id) throws Exception {
+        tokenService.getDrive().files().delete(id);
+    }
+
+    public void emptyTrash() throws Exception {
+        tokenService.getDrive().files().emptyTrash();
+    }
+
     public FileDTO findByID(String id) throws Exception {
 
         File result = tokenService.getDrive().files().get(id).execute();
@@ -197,5 +206,4 @@ public class FileService {
 
         return fileDTO;
     }
-
 }
