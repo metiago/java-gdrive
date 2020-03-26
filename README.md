@@ -18,7 +18,4 @@ mvn clean package
 
 # run
 java -jar target/zbx-1.0-SNAPSHOT.jar
-
-# deploy to GAE
-mvn clean package appengine:deploy
 ```
