@@ -128,11 +128,11 @@ public class FileService {
     }
 
     public void delete(String id) throws Exception {
-        tokenService.getDrive().files().delete(id);
+        tokenService.getDrive().files().delete(id).execute();
     }
 
     public void emptyTrash() throws Exception {
-        tokenService.getDrive().files().emptyTrash();
+        tokenService.getDrive().files().emptyTrash().execute();
     }
 
     public FileDTO findByID(String id) throws Exception {
