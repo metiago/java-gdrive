@@ -18,7 +18,7 @@ interface FileEndpointInterface {
     @ApiOperation(value = "Find all files with a predefined pagination limit of 10 records")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns a list of files"),
             @ApiResponse(code = 401, message = "Unauthorized")})
-    ResponseEntity<PageDTO> findAll(@ApiParam(value = "Token to the next page") String pageToken) throws Exception;
+    ResponseEntity<PageDTO> findAll(@ApiParam(value = "It's a token used to navigate to the next page") String pageToken) throws Exception;
 
 
     @ApiOperation(value = "Returns a file by id")
@@ -51,12 +51,12 @@ interface FileEndpointInterface {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns a list of files"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not found")})
-    ResponseEntity<List<FileDTO>> contains(@ApiParam(value = "Any character", required = true) String text) throws Exception;
+    ResponseEntity<List<FileDTO>> contains(@ApiParam(value = "It could be any character", required = true) String text) throws Exception;
 
 
     @ApiOperation(value = "List all files using an IN clause matching its id")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "For folders it'll return a list of files which is " +
-            "inside of it otherwise it should be a file and return an empty array"),
+            "inside of it otherwise it should be a file and it'll returns as an empty array"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not found")})
     ResponseEntity<List<FileDTO>> in(@ApiParam(value = "id of a existing file", required = true) String id) throws Exception;
